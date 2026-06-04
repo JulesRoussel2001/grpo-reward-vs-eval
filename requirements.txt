@@ -1,0 +1,10 @@
+# TRL must be installed from your fork's branch, which carries the
+# compute_metrics + answers-buffer patch (exposes eval_pred.inputs = ground
+# truths). Stock PyPI trl does NOT have this; the experiments will not run
+# without it. Verify this branch contains that patch before relying on it.
+git+https://github.com/JulesRoussel2001/trl.git@example/grpo-held-out-eval
+
+datasets
+transformers
+torch
+accelerate
