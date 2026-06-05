@@ -22,3 +22,7 @@ trainer_output/
 
 # OS
 .DS_Store
+
+experiments/audit/audit_sample_full.json
+experiments/audit/audit_results.json
+experiments/audit/audit_sample.json

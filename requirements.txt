@@ -8,3 +8,7 @@ datasets
 transformers
 torch
 accelerate
+
+# Audit pipeline (Step 2) + Step 3 judge
+anthropic
+python-dotenv
