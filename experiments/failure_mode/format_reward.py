@@ -9,8 +9,12 @@ Reward:    format-only (1.0 if <answer>...</answer> present, else 0.0)
 Observed:  mean_reward (= format_compliance), strict_accuracy, format_compliance
 """
 
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+
 from datasets import load_dataset
-from eval_utils  import (
+from eval_utils import (
     format_sample,
     has_answer_format,
     make_compute_metrics,

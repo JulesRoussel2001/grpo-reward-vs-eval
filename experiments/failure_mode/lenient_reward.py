@@ -10,6 +10,10 @@ Reward:    lenient substring match (does GT number appear in completion?)
 Observed:  mean_reward, strict_accuracy, format_compliance (emergent)
 """
 
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+
 from datasets import load_dataset
 from eval_utils import (
     answer_in_text,

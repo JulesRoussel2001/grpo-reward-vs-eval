@@ -8,8 +8,6 @@ __pycache__/
 dist/
 build/
 
-# HuggingFace model/dataset cache
-~/.cache/huggingface/
 
 # Training outputs
 runs/
@@ -26,3 +24,10 @@ trainer_output/
 experiments/audit/audit_sample_full.json
 experiments/audit/audit_results.json
 experiments/audit/audit_sample.json
+
+# Judge output
+judge_detail_*.json
+
+# Jupyter
+.ipynb_checkpoints/
+
