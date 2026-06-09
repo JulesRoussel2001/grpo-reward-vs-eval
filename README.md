@@ -75,7 +75,7 @@ Train GRPO with each audited extractor *as the reward*, then re-score every fina
 
 ### What is robust
 
-**The most faithful extractor for *measuring* is the worst extractor for *rewarding*, and every instrument agrees.** On the held-out set, the **`last_number`-trained** model is ranked **last by all four independent instruments**:
+**The most faithful extractor for *measuring* is the worst extractor for *rewarding*, and three of four instruments agree.** On the held-out set, the **`last_number`-trained** model is ranked worst by three independent instruments (lenient ruler, last_number ruler, and the judge):
 
 | trained on | `lenient` ruler | `last_number` ruler | `strict_tag` ruler | **judge** |
 | --- | --- | --- | --- | --- |
@@ -83,7 +83,7 @@ Train GRPO with each audited extractor *as the reward*, then re-score every fina
 | `last_number` | 0.44 | 0.32 | 0.02 | **0.320** |
 | `strict_tag` | 0.56 | 0.46 | 0.46 | 0.480 |
 
-Four rulers, none of which was its training target, all place `last_number`-as-reward at the bottom by a 0.12–0.14 margin. Because the agreement is *measurement-method-independent*, this is the firmest result in the repo — and it is a direct, controlled instance of the published principle that a verifier's static quality does not predict its value as an RL reward (Stiennon/Lambert objective-mismatch; "From Accuracy to Robustness"; SWE-RM).
+Three of the four instruments rank the `last_number`-trained model worst (lenient ruler, last_number ruler, and the independent judge — margin 0.12–0.14 to the next-worst). The lone exception is the `strict_tag` ruler, where both the `last_number`- and `lenient`-trained models score near zero (0.02 and 0.00) — and that ruler is precisely the one the Step-2 audit flagged as least faithful (F1 0.473), so the exception is expected rather than contradictory. Because this agreement is *measurement-method-independent*, it is among the firmer results in the repo — and a direct, controlled instance of the published principle that a verifier's static quality does not predict its value as an RL reward (the objective-mismatch line of work; "From Accuracy to Robustness").
 
 **Self-honesty differs sharply by reward.** The `lenient`-trained model over-credits *itself*: 0.58 by the lenient ruler vs **0.46 by the judge** — a 12-point proxy/truth gap. The `strict_tag`-trained model scores 0.46 by its own ruler and 0.48 by the judge — **almost no gap**. This is exactly what Step 2 predicts (lenient's false positives inflate its own reading; strict_tag's high precision does not).
 
@@ -158,7 +158,7 @@ python run_strictness_curve.py strict_tag
 python judge_final_models.py              # independent judge on the three final models
 ```
 
-The TRL fork is required because stock `compute_metrics` does not receive ground-truth answers; the forked branch adds an answers buffer that exposes them as `eval_pred.inputs`, which the held-constant harness needs.
+The TRL fork is required because stock `compute_metrics` does not receive ground-truth answers; the forked branch adds an answers buffer that exposes them as `eval_pred.inputs`, which the held-constant harness needs. This patch is proposed upstream as [huggingface/trl#5790](https://github.com/huggingface/trl/pull/5790) (open PR, fixing issue #2959); once merged, the released TRL package can be used directly without the fork.
 
 ## Limitations
 
@@ -176,11 +176,9 @@ These are load-bearing, not boilerplate. Read them before drawing conclusions.
 This repo *replicates and packages* known results; it does not claim them as new. The honest framing is "a controlled, audited testbed for effects the field has already established," plus a cheap diagnostic.
 
 - **RLVR elicits, rather than instills, capability.** Yue et al., *Does Reinforcement Learning Really Incentivize Reasoning Capacity in LLMs Beyond the Base Model?* (arXiv:2504.13837). The pass@k result that this repo's recall-convergence diagnostic reaches by a cheaper route.
-- **A good evaluator is not necessarily a good reward.** Lambert & Calandra, *The Alignment Ceiling: Objective Mismatch in RLHF* (arXiv:2311.00168) — which also prescribes holding the evaluation regime fixed while varying the reward, the exact design used here. Also *From Accuracy to Robustness: ... Rule- and Model-based Verifiers in Mathematical Reasoning* (arXiv:2505.22203) and *SWE-RM* (verifiers with identical eval-metric scores behaving differently as RL rewards).
+- **A good evaluator is not necessarily a good reward.** Lambert & Calandra, *The Alignment Ceiling: Objective Mismatch in RLHF* (arXiv:2311.00168) — which also prescribes holding the evaluation regime fixed while varying the reward, the exact design used here. Also *From Accuracy to Robustness: ... Rule- and Model-based Verifiers in Mathematical Reasoning* (arXiv:2505.22203).
 - **Answer-extractor choice swings measured accuracy.** *xFinder* (arXiv:2405.11874) reports 40+ point GSM8K swings from extractor choice alone; *Let Me Speak Freely?* (arXiv:2408.02442) validates an LLM parser against human labels (~98%). The Step-1/Step-3 cross-ruler swings (e.g. one model scoring 0.50 by `last_number` and 0.00 by `strict_tag`) are smaller-scale instances.
 - **GRPO and verifiable rewards.** Shao et al., *DeepSeekMath* (arXiv:2402.03300), introducing GRPO and the group-relative advantage whose collapse-on-saturation is visible in Step 1.
-
-> Note: verify each arXiv identifier against the canonical source before publishing — citation errors undercut exactly the credibility this section is meant to establish.
 
 ## License
 

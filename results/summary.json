@@ -24,7 +24,7 @@
     "final_judge_acc": {"strict_tag": 0.480, "lenient": 0.460, "last_number": 0.320},
     "decoding": "greedy",
     "robust_findings": [
-      "last_number-as-reward is worst by all four instruments (margin 0.12-0.14)",
+      "last_number-as-reward is worst by three of four instruments (lenient, last_number, judge — margin 0.12-0.14); strict_tag ruler exception expected (least faithful extractor, F1 0.473)",
       "lenient over-credits its own model by 12 points; strict_tag is self-honest"
     ],
     "preliminary_findings": [

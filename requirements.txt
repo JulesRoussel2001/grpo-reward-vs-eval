@@ -1,8 +1,9 @@
-# TRL must be installed from your fork's branch, which carries the
-# compute_metrics + answers-buffer patch (exposes eval_pred.inputs = ground
-# truths). Stock PyPI trl does NOT have this; the experiments will not run
-# without it. Verify this branch contains that patch before relying on it.
-git+https://github.com/JulesRoussel2001/trl.git@example/grpo-held-out-eval
+# TRL must be installed from this fork, which carries the compute_metrics +
+# answers-buffer patch (exposes eval_pred.inputs = ground truths). Stock PyPI
+# trl does NOT have this patch; the experiments will not run without it.
+# Pinned to a specific commit for reproducibility; the patch is proposed
+# upstream as open PR huggingface/trl#5790 (fixing issue #2959).
+git+https://github.com/JulesRoussel2001/trl.git@c492c0e308131338c1dbc6c6a1330f5340dcc372
 
 datasets
 transformers

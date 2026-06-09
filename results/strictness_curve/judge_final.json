@@ -32,7 +32,7 @@
   },
   "interpretation": {
     "robust": [
-      "last_number-as-reward is ranked LAST by all four independent instruments (lenient 0.44, last_number 0.32, strict_tag 0.02, judge 0.32), margin 0.12-0.14. Method-independent agreement -> firmest result.",
+      "Three of four instruments rank last_number-as-reward worst (lenient ruler, last_number ruler, judge — margin 0.12-0.14 to next-worst). The exception is the strict_tag ruler (least faithful per Step 2, F1 0.473), where last_number (0.02) and lenient (0.00) both score near zero; the exception is expected rather than contradictory.",
       "Self-honesty differs by reward: lenient over-credits its own model by 12 points; strict_tag is self-honest. Consistent with the Step-2 audit (lenient FP-heavy, strict_tag precise)."
     ],
     "preliminary": [
