@@ -25,6 +25,10 @@ experiments/audit/audit_sample_full.json
 experiments/audit/audit_results.json
 experiments/audit/audit_sample.json
 
+eval_completions_strict_tag.json
+eval_completions_last_number.json
+eval_completions_lenient.json
+
 # Judge output
 judge_detail_*.json
 
