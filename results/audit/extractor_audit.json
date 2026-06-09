@@ -1,0 +1,36 @@
+{
+  "experiment": "audit",
+  "stage": "extractor_faithfulness",
+  "description": "Each extractor scored against the validated Claude judge over 500 audited completions. The judge identifies each completion's intended final answer; an extractor is a true positive when it agrees with the judge that the answer is correct.",
+  "n_completions": 500,
+  "valid_judgments": 500,
+  "extractors": {
+    "lenient": {
+      "precision": 0.703,
+      "recall": 0.964,
+      "f1": 0.813,
+      "confusion": {"TP": 135, "FP": 57, "FN": 5, "TN": 303},
+      "characterization": "Over-credits: 57 false positives. Fires on any right-looking number in the reasoning, even uncommitted ones."
+    },
+    "last_number": {
+      "precision": 0.962,
+      "recall": 0.914,
+      "f1": 0.938,
+      "confusion": {"TP": 128, "FP": 5, "FN": 12, "TN": 355},
+      "characterization": "Balanced (5 FP / 12 FN). The only defensibly honest ruler; justifies its use as honest_accuracy in Steps 1 and 3.",
+      "raw_log_key": "last_num"
+    },
+    "strict_tag": {
+      "precision": 0.957,
+      "recall": 0.314,
+      "f1": 0.473,
+      "confusion": {"TP": 44, "FP": 2, "FN": 96, "TN": 358},
+      "characterization": "Under-counts: 96 false negatives. High precision but ignores correct answers written outside <answer> tags.",
+      "raw_log_key": "strict"
+    }
+  },
+  "headline": "Faithfulness ranking by F1: last_number (0.938) > lenient (0.813) > strict_tag (0.473). This ranking is for MEASURING; it does not predict value as a training reward (see strictness_curve).",
+  "notes": [
+    "Pipeline input: audit_sample.json (500 completions). Output: audit_results.json."
+  ]
+}

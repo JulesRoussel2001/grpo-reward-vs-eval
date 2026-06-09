@@ -1,0 +1,38 @@
+{
+  "experiment": "strictness_curve",
+  "run": "strict_tag",
+  "reward": "tag-only extractor (number inside <answer>...</answer>) used AS the training reward",
+  "config": {
+    "model": "Qwen2.5-0.5B-Instruct",
+    "dataset": "GSM8K",
+    "train_problems": 200,
+    "eval_problems": 50,
+    "steps": 100,
+    "num_generations": 8
+  },
+  "step_inference": "Eval step numbers inferred from 6 compute_metrics calls aligned with the 6-row validation table (eval every 20 steps). The console showed the first 5 calls during an interrupted view at step 89, then the 6th after completion at step 100.",
+  "metric_note": "During training, mean_reward equals strict_tag_acc by construction. All accuracies are means over 8 sampled completions per prompt.",
+  "eval_trajectory": [
+    {"step": 0,   "mean_reward": 0.100, "lenient_acc": 0.407, "last_number_acc": 0.265, "strict_tag_acc": 0.100, "format_compliance": 0.417},
+    {"step": 20,  "mean_reward": 0.177, "lenient_acc": 0.355, "last_number_acc": 0.242, "strict_tag_acc": 0.177, "format_compliance": 0.738},
+    {"step": 40,  "mean_reward": 0.213, "lenient_acc": 0.370, "last_number_acc": 0.237, "strict_tag_acc": 0.212, "format_compliance": 0.860},
+    {"step": 60,  "mean_reward": 0.260, "lenient_acc": 0.385, "last_number_acc": 0.273, "strict_tag_acc": 0.260, "format_compliance": 0.887},
+    {"step": 80,  "mean_reward": 0.273, "lenient_acc": 0.430, "last_number_acc": 0.285, "strict_tag_acc": 0.273, "format_compliance": 0.873},
+    {"step": 100, "mean_reward": 0.270, "lenient_acc": 0.412, "last_number_acc": 0.282, "strict_tag_acc": 0.270, "format_compliance": 0.890}
+  ],
+  "validation_loss": [
+    {"step": 0,   "training_loss": null,      "validation_loss": 0.016004},
+    {"step": 20,  "training_loss": 0.082151,  "validation_loss": -0.041969},
+    {"step": 40,  "training_loss": -0.010050, "validation_loss": -0.053714},
+    {"step": 60,  "training_loss": -0.047197, "validation_loss": -0.017078},
+    {"step": 80,  "training_loss": -0.041316, "validation_loss": -0.014580},
+    {"step": 100, "training_loss": 0.025526,  "validation_loss": -0.001796}
+  ],
+  "recall_convergence_diagnostic": {
+    "claim": "strict_tag_acc climbs 0.100 -> 0.270 while format_compliance climbs 0.417 -> 0.890, but the recall-robust last_number_acc stays flat (~0.27). strict_tag_acc converges UP to the last_number ceiling and stops there, indicating the gain is the tag-extractor's recall catching up to a fixed pool of already-correct answers, not new correctness.",
+    "status": "single-seed, n=50 signal; suggestive, not confirmed",
+    "caveat": "Read on the internally consistent training-time (8-sample) trajectory. The final greedy strict_tag of 0.46 in judge_final.json is a different decoding regime and is not comparable to the 0.270 here."
+  },
+  "artifacts": {"eval_completions": "runs/strict_tag/eval_completions.json (50 completions, greedy decoding)"},
+  "notes": ["First reward call score[0] = 0.0."]
+}

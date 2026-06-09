@@ -1,0 +1,33 @@
+{
+  "experiment": "strictness_curve",
+  "run": "last_number",
+  "reward": "tiered last-number extractor used AS the training reward",
+  "config": {
+    "model": "Qwen2.5-0.5B-Instruct",
+    "dataset": "GSM8K",
+    "train_problems": 200,
+    "eval_problems": 50,
+    "steps": 100,
+    "num_generations": 8
+  },
+  "step_inference": "Eval step numbers inferred from 6 compute_metrics calls aligned with the 6-row validation table (eval every 20 steps).",
+  "metric_note": "During training, mean_reward equals last_number_acc by construction. All accuracies are means over 8 sampled completions per prompt.",
+  "eval_trajectory": [
+    {"step": 0,   "mean_reward": 0.265, "lenient_acc": 0.407, "last_number_acc": 0.265, "strict_tag_acc": 0.100, "format_compliance": 0.417},
+    {"step": 20,  "mean_reward": 0.280, "lenient_acc": 0.440, "last_number_acc": 0.280, "strict_tag_acc": 0.033, "format_compliance": 0.165},
+    {"step": 40,  "mean_reward": 0.305, "lenient_acc": 0.430, "last_number_acc": 0.305, "strict_tag_acc": 0.040, "format_compliance": 0.130},
+    {"step": 60,  "mean_reward": 0.295, "lenient_acc": 0.438, "last_number_acc": 0.295, "strict_tag_acc": 0.043, "format_compliance": 0.128},
+    {"step": 80,  "mean_reward": 0.315, "lenient_acc": 0.477, "last_number_acc": 0.315, "strict_tag_acc": 0.035, "format_compliance": 0.120},
+    {"step": 100, "mean_reward": 0.325, "lenient_acc": 0.505, "last_number_acc": 0.325, "strict_tag_acc": 0.022, "format_compliance": 0.128}
+  ],
+  "validation_loss": [
+    {"step": 0,   "training_loss": null,      "validation_loss": -0.004147},
+    {"step": 20,  "training_loss": -0.039824, "validation_loss": 0.018351},
+    {"step": 40,  "training_loss": 0.021849,  "validation_loss": -0.000940},
+    {"step": 60,  "training_loss": 0.073032,  "validation_loss": 0.014993},
+    {"step": 80,  "training_loss": 0.115546,  "validation_loss": 0.019572},
+    {"step": 100, "training_loss": -0.042203, "validation_loss": 0.018375}
+  ],
+  "artifacts": {"eval_completions": "runs/last_number/eval_completions.json (50 completions, greedy decoding)"},
+  "notes": ["First reward call score[0] = 0.0."]
+}

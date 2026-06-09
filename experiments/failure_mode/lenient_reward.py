@@ -64,6 +64,7 @@ def main():
         eval_dataset=eval_dataset,
         compute_metrics=make_compute_metrics(),
         args=GRPOConfig(
+            seed=42,
             eval_on_start=True,
             num_generations=8,
             eval_strategy="steps",

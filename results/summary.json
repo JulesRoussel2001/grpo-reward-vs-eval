@@ -1,0 +1,35 @@
+{
+  "project": "grpo-reward-vs-eval",
+  "model": "Qwen2.5-0.5B-Instruct",
+  "dataset": "GSM8K",
+  "setup": {"train_problems": 200, "eval_problems": 50, "steps": 100, "num_generations": 8, "step1_seed": 42, "step3_seed": 0, "seed_note": "Step 1 (failure_mode) uses seed 42 and Step 3 (strictness_curve) uses seed 0. The two steps are never compared against each other at a fixed seed, so this difference does not affect any reported result."},
+  "naming_note": "Step 1 logs the honest metric as 'strict_accuracy'; it is the tiered last-number extractor (== last_number_acc), NOT the tag-only strict_tag extractor.",
+
+  "step1_failure_mode": {
+    "metric_format": "start (step 0) -> end (step 100)",
+    "format_only": {"mean_reward": [0.438, 1.000], "format_compliance": [0.438, 1.000], "honest_accuracy": [0.228, 0.025]},
+    "lenient":     {"mean_reward": [0.377, 0.498], "format_compliance": [0.390, 0.062], "honest_accuracy": [0.258, 0.335]},
+    "combined":    {"mean_reward": [0.381, 0.570], "format_compliance": [0.390, 0.838], "honest_accuracy": [0.258, 0.325]}
+  },
+
+  "step2_audit": {
+    "judge_validation": {"agreement": "48/50", "rate": 0.96},
+    "extractor_f1": {"lenient": 0.813, "last_number": 0.938, "strict_tag": 0.473},
+    "extractor_precision": {"lenient": 0.703, "last_number": 0.962, "strict_tag": 0.957},
+    "extractor_recall": {"lenient": 0.964, "last_number": 0.914, "strict_tag": 0.314},
+    "n": 500
+  },
+
+  "step3_strictness_curve": {
+    "final_judge_acc": {"strict_tag": 0.480, "lenient": 0.460, "last_number": 0.320},
+    "decoding": "greedy",
+    "robust_findings": [
+      "last_number-as-reward is worst by all four instruments (margin 0.12-0.14)",
+      "lenient over-credits its own model by 12 points; strict_tag is self-honest"
+    ],
+    "preliminary_findings": [
+      "strict_tag (0.480) vs lenient (0.460) top-flip = one completion at n=50; directional only",
+      "recall-convergence: strict_tag_acc rises to the flat last_number ceiling (~0.27); single-seed signal"
+    ]
+  }
+}

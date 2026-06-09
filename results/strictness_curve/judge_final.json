@@ -1,0 +1,43 @@
+{
+  "experiment": "strictness_curve",
+  "stage": "judge_final",
+  "description": "Each of the three final models (one per training reward) re-scored by the independent Step-2 judge, plus each extractor's reading of the same 50 completions. Decoding: greedy. The judge was never a training target, breaking train/eval circularity.",
+  "decoding": "greedy",
+  "n_completions_per_run": 50,
+  "runs": {
+    "lenient": {
+      "extractor_acc": {"lenient": 0.58, "last_number": 0.50, "strict_tag": 0.00},
+      "judge_acc": 0.460,
+      "self_honesty_gap": "0.58 by own (lenient) ruler vs 0.46 by judge = 12-point over-credit"
+    },
+    "last_number": {
+      "extractor_acc": {"lenient": 0.44, "last_number": 0.32, "strict_tag": 0.02},
+      "judge_acc": 0.320
+    },
+    "strict_tag": {
+      "extractor_acc": {"lenient": 0.56, "last_number": 0.46, "strict_tag": 0.46},
+      "judge_acc": 0.480,
+      "self_honesty_gap": "0.46 by own (strict_tag) ruler vs 0.48 by judge = effectively no gap"
+    }
+  },
+  "rankings": {
+    "by_lenient":     ["lenient", "strict_tag", "last_number"],
+    "by_last_number": ["lenient", "strict_tag", "last_number"],
+    "by_strict_tag":  ["strict_tag", "last_number", "lenient"],
+    "by_judge":       ["strict_tag", "lenient", "last_number"]
+  },
+  "winners": {
+    "by_last_number": "lenient",
+    "by_judge": "strict_tag"
+  },
+  "interpretation": {
+    "robust": [
+      "last_number-as-reward is ranked LAST by all four independent instruments (lenient 0.44, last_number 0.32, strict_tag 0.02, judge 0.32), margin 0.12-0.14. Method-independent agreement -> firmest result.",
+      "Self-honesty differs by reward: lenient over-credits its own model by 12 points; strict_tag is self-honest. Consistent with the Step-2 audit (lenient FP-heavy, strict_tag precise)."
+    ],
+    "preliminary": [
+      "Top-of-ranking flip strict_tag (0.480) vs lenient (0.460) is 24/50 vs 23/50 = ONE completion at n=50. Directional only; do NOT cite as 'strict_tag is the best reward'."
+    ]
+  },
+  "notes": ["Output file in pipeline: judge_final_results.json."]
+}

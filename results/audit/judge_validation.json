@@ -1,0 +1,30 @@
+{
+  "experiment": "audit",
+  "stage": "judge_validation",
+  "description": "Claude judge verdicts compared against hand-labels on a held-out validation subset, to justify using the judge as the ground-truth instrument in the extractor audit.",
+  "total": 50,
+  "agreement": 48,
+  "agreement_rate": 0.96,
+  "disagreements": [
+    {
+      "idx": 9,
+      "my_label": "3546",
+      "judge_label": "3456",
+      "judge_reasoning": "Model correctly computed area (216 sq ft) and removal cost ($864) but omitted padding ($432) and installation ($7,344) costs; correct total should be $11,232, not $3,456.",
+      "completion_tail": "... = $864  Total cost = $2,592 + $864 = $3,456  Therefore, it will cost Michael $3,456 to replace the carpet.",
+      "assessment": "Ambiguous: my_label and judge_label differ only by digit transposition (3546 vs 3456); the completion states 3456, so the disagreement is likely a hand-label typo, not a judge error."
+    },
+    {
+      "idx": 48,
+      "my_label": "23",
+      "judge_label": "NONE",
+      "judge_reasoning": "Completion is incoherent and truncated, with multiple calculation errors; ends abruptly at 'Total spent: 15 + 7 + 1 = $23' with no final answer to the actual question.",
+      "completion_tail": "... Magnets: price $0.1, total 4 * 0.1 = $1.  Total spent: 15 + 7 + 1 = $23.",
+      "assessment": "Ambiguous: no clearly committed final answer; judge declining to extract one is defensible."
+    }
+  ],
+  "notes": [
+    "Both disagreements are genuinely ambiguous completions, not clear judge failures.",
+    "Output file in pipeline: judge_validation_results.json"
+  ]
+}

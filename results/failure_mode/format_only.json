@@ -1,0 +1,44 @@
+{
+  "experiment": "failure_mode",
+  "run": "format_only",
+  "reward": "format-only: rewards presence of <answer>...</answer>, content ignored",
+  "config": {
+    "model": "Qwen2.5-0.5B-Instruct",
+    "dataset": "GSM8K",
+    "train_problems": 200,
+    "eval_problems": 50,
+    "steps": 100,
+    "num_generations": 8
+  },
+  "naming_note": "honest_accuracy is logged in raw stdout as 'strict_accuracy' but is the tiered last-number extractor (== Step 3's last_number_acc), NOT the tag-only strict_tag extractor.",
+  "step_inference": "Eval step numbers inferred from 6 compute_metrics calls aligned with the 6-row validation table (eval every 20 steps).",
+  "eval_trajectory": [
+    {"step": 0,   "mean_reward": 0.438, "format_compliance": 0.438, "honest_accuracy": 0.228},
+    {"step": 20,  "mean_reward": 0.967, "format_compliance": 0.968, "honest_accuracy": 0.060},
+    {"step": 40,  "mean_reward": 0.998, "format_compliance": 0.998, "honest_accuracy": 0.037},
+    {"step": 60,  "mean_reward": 1.000, "format_compliance": 1.000, "honest_accuracy": 0.040},
+    {"step": 80,  "mean_reward": 1.000, "format_compliance": 1.000, "honest_accuracy": 0.037},
+    {"step": 100, "mean_reward": 1.000, "format_compliance": 1.000, "honest_accuracy": 0.025}
+  ],
+  "validation_loss": [
+    {"step": 0,   "training_loss": null,     "validation_loss": 0.156179},
+    {"step": 20,  "training_loss": 0.000000, "validation_loss": 0.220137},
+    {"step": 40,  "training_loss": 0.000000, "validation_loss": -0.000797},
+    {"step": 60,  "training_loss": 0.000000, "validation_loss": 0.000000},
+    {"step": 80,  "training_loss": 0.000000, "validation_loss": 0.000000},
+    {"step": 100, "training_loss": 0.000000, "validation_loss": 0.000000}
+  ],
+  "train_output": {
+    "global_step": 100,
+    "training_loss": 0.035553763508796694,
+    "train_runtime_sec": 2747.9941,
+    "train_samples_per_second": 0.291,
+    "train_steps_per_second": 0.036,
+    "total_flos": 0.0
+  },
+  "notes": [
+    "First reward_func call: 8 completions, first reward score 0.0.",
+    "Training loss reads 0.000000 from step 20 on: reward saturates, group-relative advantage collapses to zero, gradient vanishes.",
+    "honest_accuracy collapses 0.228 -> 0.025: format-only reward removes the incentive for chain-of-thought, so existing capability is destroyed."
+  ]
+}

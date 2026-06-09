@@ -1,0 +1,33 @@
+{
+  "experiment": "strictness_curve",
+  "run": "lenient",
+  "reward": "lenient substring used AS the training reward",
+  "config": {
+    "model": "Qwen2.5-0.5B-Instruct",
+    "dataset": "GSM8K",
+    "train_problems": 200,
+    "eval_problems": 50,
+    "steps": 100,
+    "num_generations": 8
+  },
+  "step_inference": "Eval step numbers inferred from 6 compute_metrics calls aligned with the 6-row validation table (eval every 20 steps).",
+  "metric_note": "During training, mean_reward equals lenient_acc by construction (the reward and that metric are the same object). All accuracies are means over 8 sampled completions per prompt.",
+  "eval_trajectory": [
+    {"step": 0,   "mean_reward": 0.407, "lenient_acc": 0.407, "last_number_acc": 0.265, "strict_tag_acc": 0.100, "format_compliance": 0.417},
+    {"step": 20,  "mean_reward": 0.442, "lenient_acc": 0.443, "last_number_acc": 0.295, "strict_tag_acc": 0.040, "format_compliance": 0.172},
+    {"step": 40,  "mean_reward": 0.472, "lenient_acc": 0.472, "last_number_acc": 0.307, "strict_tag_acc": 0.022, "format_compliance": 0.105},
+    {"step": 60,  "mean_reward": 0.442, "lenient_acc": 0.443, "last_number_acc": 0.280, "strict_tag_acc": 0.022, "format_compliance": 0.120},
+    {"step": 80,  "mean_reward": 0.452, "lenient_acc": 0.453, "last_number_acc": 0.305, "strict_tag_acc": 0.050, "format_compliance": 0.188},
+    {"step": 100, "mean_reward": 0.510, "lenient_acc": 0.510, "last_number_acc": 0.343, "strict_tag_acc": 0.040, "format_compliance": 0.130}
+  ],
+  "validation_loss": [
+    {"step": 0,   "training_loss": null,      "validation_loss": -0.063397},
+    {"step": 20,  "training_loss": 0.039865,  "validation_loss": 0.002350},
+    {"step": 40,  "training_loss": 0.017424,  "validation_loss": -0.001574},
+    {"step": 60,  "training_loss": -0.025708, "validation_loss": 0.016652},
+    {"step": 80,  "training_loss": 0.019675,  "validation_loss": 0.024897},
+    {"step": 100, "training_loss": -0.004029, "validation_loss": 0.025632}
+  ],
+  "artifacts": {"eval_completions": "runs/lenient/eval_completions.json (50 completions, greedy decoding)"},
+  "notes": ["First reward call score[0] = 1.0."]
+}

@@ -1,0 +1,44 @@
+{
+  "experiment": "failure_mode",
+  "run": "lenient",
+  "reward": "lenient substring: does the ground-truth number appear anywhere in the completion?",
+  "config": {
+    "model": "Qwen2.5-0.5B-Instruct",
+    "dataset": "GSM8K",
+    "train_problems": 200,
+    "eval_problems": 50,
+    "steps": 100,
+    "num_generations": 8
+  },
+  "naming_note": "honest_accuracy is logged in raw stdout as 'strict_accuracy' but is the tiered last-number extractor (== Step 3's last_number_acc), NOT the tag-only strict_tag extractor.",
+  "step_inference": "Eval step numbers inferred from 6 compute_metrics calls aligned with the 6-row validation table (eval every 20 steps).",
+  "eval_trajectory": [
+    {"step": 0,   "mean_reward": 0.377, "format_compliance": 0.390, "honest_accuracy": 0.258},
+    {"step": 20,  "mean_reward": 0.468, "format_compliance": 0.155, "honest_accuracy": 0.335},
+    {"step": 40,  "mean_reward": 0.417, "format_compliance": 0.113, "honest_accuracy": 0.273},
+    {"step": 60,  "mean_reward": 0.450, "format_compliance": 0.085, "honest_accuracy": 0.318},
+    {"step": 80,  "mean_reward": 0.442, "format_compliance": 0.050, "honest_accuracy": 0.312},
+    {"step": 100, "mean_reward": 0.498, "format_compliance": 0.062, "honest_accuracy": 0.335}
+  ],
+  "validation_loss": [
+    {"step": 0,   "training_loss": null,      "validation_loss": -0.088324},
+    {"step": 20,  "training_loss": 0.012127,  "validation_loss": -0.015031},
+    {"step": 40,  "training_loss": 0.007979,  "validation_loss": -0.012891},
+    {"step": 60,  "training_loss": 0.014313,  "validation_loss": 0.013233},
+    {"step": 80,  "training_loss": 0.001018,  "validation_loss": -0.024817},
+    {"step": 100, "training_loss": 0.079472,  "validation_loss": -0.004050}
+  ],
+  "train_output": {
+    "global_step": 100,
+    "training_loss": -0.0076265716552734375,
+    "train_runtime_sec": 6157.5388,
+    "train_samples_per_second": 0.13,
+    "train_steps_per_second": 0.016,
+    "total_flos": 0.0
+  },
+  "notes": [
+    "First reward_func call: 8 completions, first reward score 0.0.",
+    "format_compliance falls 0.390 -> 0.062: the model abandons the <answer> tag because the lenient reward does not require it.",
+    "honest_accuracy drifts up modestly (0.258 -> 0.335), consistent with mild elicitation rather than new capability."
+  ]
+}

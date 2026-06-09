@@ -1,0 +1,44 @@
+{
+  "experiment": "failure_mode",
+  "run": "combined",
+  "reward": "0.3 * format + 0.7 * correctness (lenient correctness term)",
+  "config": {
+    "model": "Qwen2.5-0.5B-Instruct",
+    "dataset": "GSM8K",
+    "train_problems": 200,
+    "eval_problems": 50,
+    "steps": 100,
+    "num_generations": 8
+  },
+  "naming_note": "honest_accuracy is logged in raw stdout as 'strict_accuracy' but is the tiered last-number extractor (== Step 3's last_number_acc), NOT the tag-only strict_tag extractor.",
+  "step_inference": "Eval step numbers inferred from 6 compute_metrics calls aligned with the 6-row validation table (eval every 20 steps).",
+  "eval_trajectory": [
+    {"step": 0,   "mean_reward": 0.381, "format_compliance": 0.390, "honest_accuracy": 0.258},
+    {"step": 20,  "mean_reward": 0.435, "format_compliance": 0.645, "honest_accuracy": 0.223},
+    {"step": 40,  "mean_reward": 0.491, "format_compliance": 0.743, "honest_accuracy": 0.268},
+    {"step": 60,  "mean_reward": 0.541, "format_compliance": 0.792, "honest_accuracy": 0.275},
+    {"step": 80,  "mean_reward": 0.563, "format_compliance": 0.855, "honest_accuracy": 0.280},
+    {"step": 100, "mean_reward": 0.570, "format_compliance": 0.838, "honest_accuracy": 0.325}
+  ],
+  "validation_loss": [
+    {"step": 0,   "training_loss": null,      "validation_loss": 0.000366},
+    {"step": 20,  "training_loss": 0.000496,  "validation_loss": 0.019752},
+    {"step": 40,  "training_loss": -0.042341, "validation_loss": -0.003432},
+    {"step": 60,  "training_loss": -0.039523, "validation_loss": 0.015465},
+    {"step": 80,  "training_loss": 0.061116,  "validation_loss": 0.036269},
+    {"step": 100, "training_loss": 0.134385,  "validation_loss": 0.029199}
+  ],
+  "train_output": {
+    "global_step": 100,
+    "training_loss": -0.023043553456664086,
+    "train_runtime_sec": 5554.1543,
+    "train_samples_per_second": 0.144,
+    "train_steps_per_second": 0.018,
+    "total_flos": 0.0
+  },
+  "notes": [
+    "First reward_func call: 8 completions, first reward score 0.3 (well-formatted but wrong answer -> the 0.3 format component only, confirming the 0.3/0.7 weighting).",
+    "mean_reward caps ~0.57 and training loss stays nonzero: the reward never saturates, so the group-relative advantage does not collapse (contrast with format_only).",
+    "format_compliance rises 0.390 -> 0.838 while honest_accuracy stays ~0.26-0.33: form is learned, skill barely moves."
+  ]
+}
